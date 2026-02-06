@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build: .
+    container_name: hackhub-frontend
+    ports:
+      - "80:80"
+    networks:
+      - hackhub-network # Si collega alla rete del backend
+
+networks:
+  hackhub-network:
+    external: true # Fondamentale: dice a Docker di non crearne una nuova
+    name: hackhub_hackhub-network

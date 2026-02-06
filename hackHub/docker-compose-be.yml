@@ -1,0 +1,34 @@
+services:
+  # --- DATABASE: PostgreSQL ---
+  db:
+    image: postgres:15-alpine
+    container_name: hackhub-db
+    environment:
+      - POSTGRES_DB=hackhub_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - hackhub-network
+
+  # --- BACKEND: Spring Boot ---
+  backend:
+    build: .
+    container_name: hackhub-backend
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/hackhub_db
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=secret
+      - JWT_SECRET=xz41wVXiG3IZq2a461ZBfdECYHXtHk+ffsZpvP7wWEY=
+    depends_on:
+      - db
+    networks:
+      - hackhub-network
+
+networks:
+  hackhub-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
