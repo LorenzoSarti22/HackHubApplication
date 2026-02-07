@@ -1,0 +1,25 @@
+/* Forza lo spessore e il colore della linea sinistra */
+.card.border-left-success {
+    border-left: 0.5rem solid #1cc88a !important; /* Aumentato a 0.5rem per farla bella spessa */
+    border-bottom: none !important;
+    border-right: none !important;
+    border-top: none !important;
+}
+
+.card.border-left-warning {
+    border-left: 0.5rem solid #f6c23e !important;
+    border-bottom: none !important;
+    border-right: none !important;
+    border-top: none !important;
+}
+
+/* Assicuriamoci che la card non abbia altri bordi che disturbano */
+.card {
+    border: none !important;
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15) !important;
+}
+
+/* Colore grigio chiaro per le icone di sfondo */
+.text-gray-200 {
+    color: #e3e6f0 !important;
+}
