@@ -34,7 +34,7 @@ dependencies {
 
     // Database
     runtimeOnly("org.postgresql:postgresql:42.7.3")
-    runtimeOnly("com.h2database:h2:2.2.224")
+    //runtimeOnly("com.h2database:h2:2.2.224")
 
     //mapstruct
     implementation("org.mapstruct:mapstruct:1.5.5.Final")

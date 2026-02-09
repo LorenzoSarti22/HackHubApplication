@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
-import { Login } from './login/login';
-import { Dashboard } from './dashboard/dashboard';
+import { Login } from './components/login/login';
+import { Dashboard } from './components/dashboard/dashboard';
+import { GestioneEventi } from './components/organizzatore/gestioneEventi/gestioneEventi';
 
-// Assicurati che ci sia 'export' davanti e che si chiami 'routes' (minuscolo)
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: Dashboard },
   { path: 'login', component: Login },
+  { path: 'gestioneEventi', component: GestioneEventi },
   { path: '**', redirectTo: '/dashboard' }
 ];
+

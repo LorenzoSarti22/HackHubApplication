@@ -4,15 +4,13 @@ import it.unicam.coloni.hackhub.context.identity.application.dto.UserDto;
 import it.unicam.coloni.hackhub.context.identity.application.dto.request.LoginRequest;
 import it.unicam.coloni.hackhub.context.identity.application.dto.request.SignUpRequest;
 import it.unicam.coloni.hackhub.context.identity.application.dto.response.LoginResponse;
+import it.unicam.coloni.hackhub.context.identity.application.mapper.UserMapper;
 import it.unicam.coloni.hackhub.context.identity.application.service.AuthService;
 import it.unicam.coloni.hackhub.shared.infrastructure.web.ApiResponse;
 import it.unicam.coloni.hackhub.shared.infrastructure.web.ApiResponseFactory;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -21,12 +19,14 @@ public class UserController {
 
     private final AuthService userService;
     private final ApiResponseFactory factory;
+    private final UserMapper userMapper;//aggiunto
 
 
     @Autowired
-    public UserController(AuthService service, ApiResponseFactory factory){
+    public UserController(AuthService service, ApiResponseFactory factory, UserMapper userMapper){
         this.userService = service;
         this.factory = factory;
+        this.userMapper = userMapper; //aggiunto
 
     }
 //
@@ -76,6 +76,14 @@ public class UserController {
         );
     }
 
+    //aggiunto
+    @GetMapping("/me")
+    public ApiResponse<UserDto> getMe() {
+        return factory.createSuccessResponse(
+                "Profilo utente recuperato con successo",
+                userMapper.toDto(userService.getLoggedUser())
+        );
+    }
 
 
 

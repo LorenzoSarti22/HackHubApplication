@@ -6,10 +6,17 @@ RUN npm install
 COPY . .
 RUN npm run build --configuration=production
 
+# ... (parte build precedente)
+
 # STAGE 2: Servire con Nginx
 FROM nginx:stable-alpine
-# Nota: "dist/hack-hub-frontend" dipende dal nome del progetto in angular.json
-COPY --from=build /app/dist/hack-hub-frontend/browser /usr/share/nginx/html
+
+# Rimuovi i file di default
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist/hack-hub-frontend/browser/. /usr/share/nginx/html/
+
+# Copia la config di nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
