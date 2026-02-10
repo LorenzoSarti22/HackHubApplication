@@ -1,6 +1,6 @@
 <div id="wrapper" class="d-flex">
 
-  <ul *ngIf="isNotLogin()" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="min-width: 250px; min-height: 100vh; background: #4e73df;">
+  <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="min-width: 250px; min-height: 100vh; background: #4e73df;">
 
     <a class="sidebar-brand d-flex align-items-center justify-content-center p-3 text-white text-decoration-none" routerLink="/dashboard">
       <div class="sidebar-brand-icon rotate-n-15">
@@ -23,7 +23,6 @@
     <div class="sidebar-heading px-3 pb-2 text-white-50" style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
       Visualizza Eventi
     </div>
-
 
     <li class="nav-item">
       <a class="nav-link collapsed p-3 d-flex justify-content-between align-items-center text-white text-decoration-none"
@@ -57,24 +56,26 @@
       </a>
     </li>
 
-    <hr class="sidebar-divider mt-3 text-white-50">
+    <div *ngIf="isOrganizer()">
+      <hr class="sidebar-divider mt-3 text-white-50">
 
-    <div class="sidebar-heading px-3 pb-2 text-white-50" style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
-      Area Organizzatore
+      <div class="sidebar-heading px-3 pb-2 text-white-50" style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
+        Area Organizzatore
+      </div>
+
+      <li class="nav-item">
+        <a class="nav-link p-2 align-items-center text-white text-decoration-none" routerLink="/gestioneEventi">
+          <i class="bi bi-gear"></i>
+          <span> Gestisci Hackaton</span>
+        </a>
+      </li>
     </div>
 
-    <li class="nav-item">
-      <a class="nav-link p-2 align-items-center text-white text-decoration-none" routerLink="/gestioneEventi">
-        <i class="bi bi-gear"></i>
-        <span> Gestisci Hackaton</span>
-      </a>
-    </li>
-
-    <hr class="sidebar-divider d-none d-md-block text-white-50">
   </ul>
+
   <div id="content-wrapper" class="d-flex flex-column flex-grow-1 bg-light">
 
-    <nav *ngIf="isNotLogin()" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-flex justify-content-between px-4 py-2">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-flex justify-content-between px-4 py-2">
       <div class="input-group w-25">
         <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
         <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
@@ -86,7 +87,7 @@
              id="userDropdown"
              role="button"
              routerLink="/login">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> </span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small"> Accedi </span>
             <img class="img-profile rounded-circle"
                  src="https://startbootstrap.github.io/startbootstrap-sb-admin-2/img/undraw_profile.svg"
                  width="30">
@@ -95,9 +96,9 @@
       </ul>
     </nav>
 
-    <div class="container-fluid" [class.p-0]="!isNotLogin()">
+    <div class="container-fluid">
       <router-outlet></router-outlet>
     </div>
 
   </div>
-</div>
+</div>.

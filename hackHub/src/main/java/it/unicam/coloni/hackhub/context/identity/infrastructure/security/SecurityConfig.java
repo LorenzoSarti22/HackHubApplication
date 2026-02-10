@@ -63,7 +63,7 @@ public class SecurityConfig {
         dao.setUserDetailsService(userDetailsService);
         dao.setPasswordEncoder(encoder());
 
-        JWTProvider jwt = new JWTProvider();
+        JWTProvider jwt = new JWTProvider(userDetailsService);//modificato l'input
 
         List<AuthenticationProvider> providers= new ArrayList<>();
         providers.add(dao);

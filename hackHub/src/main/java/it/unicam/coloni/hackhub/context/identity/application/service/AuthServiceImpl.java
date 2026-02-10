@@ -28,71 +28,70 @@ public class AuthServiceImpl implements AuthService {
     private final JWTHelper jwtHelper;
     private final AuthenticationManager authenticationManager;
     private final PasswordHelper passwordHelper;
-
     private final List<UserRegistrationObserver> userRegistrationObservers;
 
-
     @Autowired
-    public AuthServiceImpl(UserRepository repo, UserMapper mapper, PasswordHelper passHandler, JWTHelper jHelper, AuthenticationManager authManager, List<UserRegistrationObserver> observers) {
-        userRepository = repo;
-        userMapper = mapper;
-        jwtHelper = jHelper;
-        authenticationManager = authManager;
-        passwordHelper = passHandler;
-        userRegistrationObservers = observers;
+    public AuthServiceImpl(UserRepository repo,
+                           UserMapper mapper,
+                           PasswordHelper passHandler,
+                           JWTHelper jHelper,
+                           AuthenticationManager authManager,
+                           List<UserRegistrationObserver> observers) {
+        this.userRepository = repo;
+        this.userMapper = mapper;
+        this.jwtHelper = jHelper;
+        this.authenticationManager = authManager;
+        this.passwordHelper = passHandler;
+        this.userRegistrationObservers = observers;
     }
 
     @Override
     public LoginResponse logIn(LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(), request.getPassword()
-                )
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        return new LoginResponse(jwtHelper.generate(authentication, 1));
+        // Recupera l'utente dal database
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        String token = jwtHelper.generate(authentication, 1);
+        return new LoginResponse(token, user.getUsername(), user.getRole().toString());
     }
-
-
-
-
-
 
     @Override
     @Transactional
-    public UserDto signUp(SignUpRequest request){
-       User user = userMapper.fromSignUp(request);
-       user.setPassword(passwordHelper.encode(request.getPassword()));
-       User saved = userRepository.save(user);
-       notifyObservers(user);
-       return userMapper.toDto(saved);
+    public UserDto signUp(SignUpRequest request) {
+        User user = userMapper.fromSignUp(request);
+        user.setPassword(passwordHelper.encode(request.getPassword()));
+        User saved = userRepository.save(user);
+
+        // Notifica eventuali observer (es. invio email di benvenuto)
+        notifyObservers(saved);
+
+        return userMapper.toDto(saved);
     }
 
     @Override
-    public User getLoggedUser(){
+    public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new SecurityException("No logged user");
+            throw new SecurityException("No logged user found in SecurityContext");
         }
+
         String username = authentication.getName();
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("Logged user not found in database"));
-
-
     }
 
-    private void notifyObservers(User user){
-        for(UserRegistrationObserver observer: userRegistrationObservers){
+    private void notifyObservers(User user) {
+        for (UserRegistrationObserver observer : userRegistrationObservers) {
             try {
                 observer.onUserRegistered(user);
             } catch (Exception e) {
+                // Loggiamo l'errore ma non blocchiamo la registrazione principale
                 System.err.println("Error while notifying observer: " + e.getMessage());
             }
         }
     }
-
-
-
-
-
 }
