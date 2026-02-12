@@ -10,10 +10,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('hack-hub-frontend');
-
-  private router = inject(Router);
-
+  constructor(public router: Router) { }
   isNotLogin(): boolean {
     return this.router.url !== '/login';
   }
