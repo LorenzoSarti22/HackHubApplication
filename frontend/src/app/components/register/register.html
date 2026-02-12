@@ -1,0 +1,92 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
+    <div class="card shadow-lg" style="width: 500px; border-radius: 15px;">
+        <div class="card-body p-5 text-center">
+            <i class="bi bi-person-plus-fill text-primary" style="font-size: 3rem;"></i>
+            <h2 class="fw-bold mb-4">Registrati a HackHub</h2>
+
+            <form #registerForm="ngForm" (ngSubmit)="onRegister()">
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating text-start">
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Nome"
+                                [(ngModel)]="registerData.firstName" required>
+                            <label for="firstName">Nome</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating text-start">
+                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Cognome"
+                                [(ngModel)]="registerData.lastName" required>
+                            <label for="lastName">Cognome</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3 text-start">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                        [(ngModel)]="registerData.username" required>
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="form-floating mb-3 text-start">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                        [(ngModel)]="registerData.email" required email>
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="form-floating mb-3 text-start">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                        [(ngModel)]="registerData.password" required minlength="6">
+                    <label for="password">Password</label>
+                </div>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-md">
+                        <div class="form-floating text-start">
+                            <input type="date" class="form-control" id="birthDate" name="birthDate"
+                                placeholder="Data di Nascita" [(ngModel)]="registerData.birthDate" required>
+                            <label for="birthDate">Data di Nascita</label>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="form-floating text-start">
+                            <select class="form-select" id="gender" name="gender" [(ngModel)]="registerData.gender"
+                                required>
+                                <option value="MALE">Maschio</option>
+                                <option value="FEMALE">Femmina</option>
+                                <option value="OTHER">Altro</option>
+                            </select>
+                            <label for="gender">Genere</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-floating mb-3 text-start">
+                    <select class="form-select" id="role" name="role" [(ngModel)]="registerData.role" required>
+                        <option value="STUDENT">Studente</option>
+                        <option value="ORGANIZER">Organizzatore</option>
+                        <option value="MENTOR">Mentore</option>
+                        <option value="JUDGE">Giudice</option>
+                    </select>
+                    <label for="role">Ruolo</label>
+                </div>
+
+                <!-- Optional: Photo URL can be added here or handled automatically/later -->
+
+                <button class="btn btn-primary w-100 btn-lg shadow-sm mt-3" type="submit"
+                    [disabled]="!registerForm.form.valid">
+                    Registrati
+                </button>
+            </form>
+
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+                {{ errorMessage }}
+            </div>
+
+            <div class="mt-4 small text-muted">
+                Hai già un account? <a routerLink="/login" class="text-decoration-none">Accedi</a>
+            </div>
+        </div>
+    </div>
+</div>
