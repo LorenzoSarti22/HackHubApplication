@@ -4,6 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
     id("application")
     id("io.freefair.lombok") version "8.10"
+    id("eclipse")
 }
 
 group = "it.coloni"
@@ -59,3 +60,4 @@ tasks.test {
 application{
     mainClass.set("it.unicam.coloni.hackhub.Main")
 }
+
