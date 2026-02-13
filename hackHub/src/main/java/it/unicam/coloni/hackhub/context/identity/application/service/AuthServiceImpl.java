@@ -50,6 +50,7 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
+        
         return new LoginResponse(jwtHelper.generate(authentication, 1));
     }
 

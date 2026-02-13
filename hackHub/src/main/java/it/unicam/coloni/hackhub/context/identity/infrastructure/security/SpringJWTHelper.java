@@ -32,8 +32,15 @@ public class SpringJWTHelper implements JWTHelper {
         long seconds = Instant.now().getEpochSecond()+86400*duration;
         Date expDate =  Date.from(Instant.ofEpochSecond(seconds));
         System.out.println(expDate);
+        // Extract role from authorities (assuming single role)
+        String role = userPrincipal.getAuthorities().stream()
+                .findFirst()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .orElse("STUDENT");
+
         return Jwts.builder()
                 .subject(userPrincipal.getUsername())
+                .claim("role", role) // Add role claim
                 .expiration(expDate)
                 .signWith(getSigningKey())
                 .compact();

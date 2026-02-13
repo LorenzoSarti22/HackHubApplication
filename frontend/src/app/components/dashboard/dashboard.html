@@ -1,7 +1,33 @@
 <div class="container-fluid pt-4">
+  <!-- Cache bust: Organizer Area Check -->
 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-primary ">BENVENUTO IN HUCKHUB!</h1>
+  </div>
+
+  <!-- Area Organizzatore -->
+  <div class="row" *ngIf="isOrganizer">
+    <div class="col-12 mb-4">
+      <div class="card border-left-primary shadow h-100 py-2 border-0">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="h5 font-weight-bold text-primary text-uppercase mb-1">
+                Area Organizzatore
+              </div>
+              <div class="mb-0 text-gray-800">
+                Gestisci i tuoi Hackathon e monitora le iscrizioni.
+              </div>
+            </div>
+            <div class="col-auto">
+              <a routerLink="/gestioneEventi" class="btn btn-primary">
+                <i class="bi bi-gear-fill me-2"></i>Gestisci Hackathon
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="row">
@@ -50,10 +76,8 @@
 
           <div class="card-body">
             <div class="text-center">
-              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-                   style="width: 25rem;"
-                   src="assets/imgIllustration/53528.jpg"
-                   alt="Illustrazione Hackathon" />
+              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/imgIllustration/53528.jpg"
+                alt="Illustrazione Hackathon" />
             </div>
             <p class="text-dark">
               Esplora gli hackathon in modo semplice e veloce. Da qui puoi monitorare gli eventi attivi,
@@ -63,8 +87,8 @@
               Esplora la documentazione &rarr;
             </a>
           </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   </div>
 </div>

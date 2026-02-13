@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf,
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PlatformRoles } from '../../enums/platform-roles';
 
 @Component({
     selector: 'app-register',
@@ -20,10 +21,13 @@ export class Register {
         password: '',
         birthDate: '',
         gender: 'MALE',
-        role: 'STUDENT',
+        role: PlatformRoles.STUDENT,
         photoUrl: '' // Optional or default
     };
     errorMessage: string = '';
+
+    // Expose enum to template
+    roles = Object.values(PlatformRoles);
 
     constructor(private http: HttpClient, private router: Router) { }
 
