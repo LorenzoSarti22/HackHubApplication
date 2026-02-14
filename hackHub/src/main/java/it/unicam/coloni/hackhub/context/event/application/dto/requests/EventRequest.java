@@ -10,8 +10,10 @@ public abstract class EventRequest {
 
     private String name;
 
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     private String rulesUrl;

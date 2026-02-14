@@ -29,5 +29,6 @@ public abstract class UserRequest {
     private String photoUrl;
 
 
+    @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 }

@@ -62,6 +62,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public UserDto signUp(SignUpRequest request){
+       System.out.println("Processing SignUp Request: " + request);
        User user = userMapper.fromSignUp(request);
        user.setPassword(passwordHelper.encode(request.getPassword()));
        User saved = userRepository.save(user);

@@ -14,27 +14,28 @@
       <div class="table-responsive">
         <table class="table table-hover border">
           <thead class="table-light">
-          <tr>
-            <th>Titolo Evento</th>
-            <th>Data Inizio</th>
-            <th>Stato</th>
-            <th class="text-center">Azioni</th>
-          </tr>
+            <tr>
+              <th>Titolo Evento</th>
+              <th>Data Inizio</th>
+              <th>Stato</th>
+              <th class="text-center">Azioni</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <td class="align-middle ">HackHub Global Challenge</td>
-            <td class="align-middle">15/06/2026</td>
-            <td class="align-middle"><span class="badge bg-success">Attivo</span></td>
-            <td class="text-center">
-              <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal" data-bs-target="#modalEvento">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button class="btn btn-sm btn-outline-danger">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
+            <tr>
+              <td class="align-middle ">HackHub Global Challenge</td>
+              <td class="align-middle">15/06/2026</td>
+              <td class="align-middle"><span class="badge bg-success">Attivo</span></td>
+              <td class="text-center">
+                <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal"
+                  data-bs-target="#modalEvento">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -46,37 +47,36 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="modalLabel">Gestione Dettagli Hackathon</h5>
+        <h5 class="modal-title" id="modalLabel">Nuovo Hackathon</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="mb-3">
             <label class="form-label fw-bold">Nome Evento</label>
-            <input type="text" class="form-control" placeholder="Es: Cyber Security Hack">
+            <input type="text" class="form-control" name="name" [(ngModel)]="eventData.name"
+              placeholder="Es: Cyber Security Hack" required>
           </div>
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label class="form-label fw-bold">Data Evento</label>
-              <input type="date" class="form-control">
+              <label class="form-label fw-bold">Data Inizio</label>
+              <input type="date" class="form-control" name="startDate" [(ngModel)]="eventData.startDate" required>
             </div>
             <div class="col-md-6 mb-3">
-              <label class="form-label fw-bold">Stato</label>
-              <select class="form-select">
-                <option value="attivo">Attivo</option>
-                <option value="chiuso">Chiuso</option>
-              </select>
+              <label class="form-label fw-bold">Data Fine</label>
+              <input type="date" class="form-control" name="endDate" [(ngModel)]="eventData.endDate" required>
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label fw-bold">Descrizione Breve</label>
-            <textarea class="form-control" rows="3" placeholder="Descrivi l'obiettivo dell'evento..."></textarea>
+            <label class="form-label fw-bold">URL Regolamento</label>
+            <input type="text" class="form-control" name="rulesUrl" [(ngModel)]="eventData.rulesUrl"
+              placeholder="https://..." required>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-        <button type="button" class="btn btn-primary">Salva Evento</button>
+        <button type="button" id="closeModalBtn" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+        <button type="button" class="btn btn-primary" (click)="createEvent()">Salva Evento</button>
       </div>
     </div>
   </div>
