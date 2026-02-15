@@ -29,11 +29,11 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="h5 mb-0 text-uppercase font-weight-bold text-gray-800 mb-2">{{ event.name }}
+              <div class="h5 mb-0 text-uppercase font-weight-bold text-gray-800 mb-2">{{ event?.name }}
               </div>
               <div class="text-xs text-gray-600 mb-3">
-                <strong>Inizio:</strong> {{ event.runningPeriod.startDate | date:'dd MMM yyyy' }}<br>
-                <strong>Fine:</strong> {{ event.runningPeriod.endDate | date:'dd MMM yyyy' }}
+                <strong>Inizio:</strong> {{ event?.runningPeriod?.startDate | date:'dd MMM yyyy' }}<br>
+                <strong>Fine:</strong> {{ event?.runningPeriod?.endDate | date:'dd MMM yyyy' }}
               </div>
               <button class="btn btn-primary btn-sm btn-icon-split">
                 <span class="icon text-white-50">

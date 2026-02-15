@@ -18,11 +18,9 @@ export class ActiveHackathons implements OnInit {
     constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
-        console.log('ActiveHackathons initialized');
         this.loading = true;
         this.http.get<any>('/api/event/active').subscribe({
             next: (response) => {
-                console.log('Data received', response);
                 if (response.success) {
                     this.events = response.data;
                 } else {
@@ -32,7 +30,6 @@ export class ActiveHackathons implements OnInit {
                 this.cdr.detectChanges();
             },
             error: (err) => {
-                console.error('Error fetching events', err);
                 this.error = 'Impossibile caricare gli hackathon attivi.';
                 this.loading = false;
                 this.cdr.detectChanges();
