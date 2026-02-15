@@ -1,16 +1,11 @@
-.card {
+card {
     transition: transform 0.2s;
 }
 
-.hover-card:hover {
+.card:hover {
     transform: translateY(-5px);
-    cursor: pointer;
 }
 
 .border-left-active {
     border-left: 0.5rem solid #1cc88a !important;
-}
-
-.border-left-concluded {
-    border-left: 0.5rem solid #f6c23e !important;
 }

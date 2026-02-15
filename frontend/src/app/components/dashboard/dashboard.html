@@ -33,25 +33,27 @@
   <div class="row">
 
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-success shadow h-100 py-2 border-0">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class=" h5 text-xs font-weight-bold text-gray-900 text-uppercase mb-3">
-                Hackathon Attivi
+      <a routerLink="/active-hackathons" class="text-decoration-none">
+        <div class="card shadow h-100 py-2 border-0 hover-card border-left-active">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class=" h5 text-xs font-weight-bold text-gray-900 text-uppercase mb-3">
+                  Hackathon Attivi
+                </div>
+                <div class="h7 mb-0 font-weight-bold text-gray-800">{{ activeEventsCount }}</div>
               </div>
-              <div class="h7 mb-0 font-weight-bold text-gray-800">5</div>
-            </div>
-            <div class="col-auto">
-              <i class="bi bi-clipboard-check fs-3 text-gray-400"></i>
+              <div class="col-auto">
+                <i class="bi bi-clipboard-check fs-3 text-gray-400"></i>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     </div>
 
     <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-warning shadow h-100 py-2 border-0">
+      <div class="card shadow h-100 py-2 border-0 hover-card border-left-concluded">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
@@ -77,7 +79,7 @@
           <div class="card-body">
             <div class="text-center">
               <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/imgIllustration/53528.jpg"
-                alt="Illustrazione Hackathon" />
+                   alt="Illustrazione Hackathon" />
             </div>
             <p class="text-dark">
               Esplora gli hackathon in modo semplice e veloce. Da qui puoi monitorare gli eventi attivi,

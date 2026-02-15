@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,7 +10,22 @@ import { RouterModule } from '@angular/router';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+
+export class Dashboard implements OnInit {
+  activeEventsCount: number = 0;
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit() {
+    this.http.get<any>('/api/event/active').subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.activeEventsCount = response.data.length;
+        }
+      },
+      error: (err) => console.error('Error fetching active events count', err)
+    });
+  }
 
   get isOrganizer(): boolean {
     const token = localStorage.getItem('token');

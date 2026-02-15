@@ -138,4 +138,18 @@ public class EventServiceImpl implements EventService {
                 .build();
     }
 
+    @Override
+    public List<EventDto> getActiveEvents() {
+        List<it.unicam.coloni.hackhub.context.event.domain.model.EventStatus> activeStatuses = List.of(
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.SUBSCRIPTION,
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.WAITING,
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.RUNNING,
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATING,
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATED
+        );
+        return eventRepository.findByStatusIn(activeStatuses).stream()
+                .map(eventMapper::toDto)
+                .toList();
+    }
+
 }

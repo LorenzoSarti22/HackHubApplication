@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface EventService {
 
+    java.util.List<EventDto> getActiveEvents();
+
     EventDto createEvent(EventCreationRequest request);
 
     EventDto fetchById(Long id);

@@ -87,4 +87,9 @@ public class EventController {
     public ApiResponse<EventDto> closeEvent(@PathVariable Long id) {
         return responseFactory.createSuccessResponse("Event closed successfully", eventService.closeEvent(id));
     }
+
+    @GetMapping("/active")
+    public ApiResponse<java.util.List<EventDto>> getActiveEvents() {
+        return responseFactory.createSuccessResponse("Active events fetched successfully", eventService.getActiveEvents());
+    }
 }
