@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { Router, RouterModule } from '@angular/router';
@@ -18,10 +18,12 @@ export class Login {
     password: ''
   };
 
-  constructor(private http: HttpClient, private router: Router) { }
+  errorMessage: string | null = null;
+
+  constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) { }
 
   onLogin() {
-
+    this.errorMessage = null;
     this.http.post<any>('/api/user/login', this.loginData).subscribe({
       next: (response) => {
         if (response.data && response.data.token) {
@@ -34,7 +36,8 @@ export class Login {
       },
       error: (error) => {
         console.error('Login failed', error);
-        alert('Login fallito. Controlla le credenziali.');
+        this.errorMessage = 'Login fallito. Controlla le credenziali.';
+        this.cdr.detectChanges();
       }
     });
   }

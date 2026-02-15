@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -19,16 +19,22 @@ export class GestioneEventi {
     rulesUrl: ''
   };
 
-  constructor(private http: HttpClient) { }
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   createEvent() {
     console.log('Creating event:', this.eventData);
+    this.errorMessage = null;
+    this.successMessage = null;
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
     if (!this.eventData.startDate || !this.eventData.endDate) {
-      alert('Inserisci entrambe le date');
+      this.errorMessage = 'Inserisci entrambe le date.';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -39,7 +45,8 @@ export class GestioneEventi {
       console.log('Parsed Start Date:', startDate);
 
       if (startDate < today) {
-        alert('Impossibile creare un evento con una data passata');
+        this.errorMessage = 'Impossibile creare un evento con una data passata.';
+        this.cdr.detectChanges();
         return;
       }
 
@@ -49,25 +56,31 @@ export class GestioneEventi {
       console.log('Parsed End Date:', endDate);
 
       if (endDate < startDate) {
-        alert('La data di fine non può essere precedente alla data di inizio');
+        this.errorMessage = 'La data di fine non può essere antecendente alla data di inizio.';
+        this.cdr.detectChanges();
         return;
       }
     } catch (e) {
       console.error('Date parsing error', e);
-      alert('Errore nel formato delle date');
+      this.errorMessage = 'Errore nel formato delle date.';
+      this.cdr.detectChanges();
       return;
     }
 
     this.http.post<any>('/api/event', this.eventData).subscribe({
       next: (response) => {
         console.log('Event created successfully', response);
-        alert('Hackathon creato con successo!');
-        document.getElementById('closeModalBtn')?.click();
-        this.resetForm();
+        this.successMessage = 'Hackathon creato con successo!';
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          document.getElementById('closeModalBtn')?.click();
+          this.resetForm();
+        }, 1500);
       },
       error: (error) => {
         console.error('Error creating event', error);
-        alert('Errore durante la creazione dell\'evento.');
+        this.errorMessage = 'Errore durante la creazione dell\'evento.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -79,6 +92,8 @@ export class GestioneEventi {
       endDate: '',
       rulesUrl: ''
     };
+    this.errorMessage = null;
+    this.successMessage = null;
   }
 
 }
