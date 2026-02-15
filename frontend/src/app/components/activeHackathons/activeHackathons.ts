@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -15,22 +15,27 @@ export class ActiveHackathons implements OnInit {
     loading = true;
     error: string | null = null;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
+        console.log('ActiveHackathons initialized');
+        this.loading = true;
         this.http.get<any>('/api/event/active').subscribe({
             next: (response) => {
+                console.log('Data received', response);
                 if (response.success) {
                     this.events = response.data;
                 } else {
                     this.error = response.message;
                 }
                 this.loading = false;
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 console.error('Error fetching events', err);
                 this.error = 'Impossibile caricare gli hackathon attivi.';
                 this.loading = false;
+                this.cdr.detectChanges();
             }
         });
     }

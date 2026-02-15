@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -14,16 +14,23 @@ import { RouterModule } from '@angular/router';
 export class Dashboard implements OnInit {
   activeEventsCount: number = 0;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    console.log('Dashboard initialized');
     this.http.get<any>('/api/event/active').subscribe({
       next: (response) => {
+        console.log('Dashboard active events response', response);
         if (response.success && response.data) {
           this.activeEventsCount = response.data.length;
+          // Ensure view updates
+          this.cdr.detectChanges();
         }
       },
-      error: (err) => console.error('Error fetching active events count', err)
+      error: (err) => {
+        console.error('Error fetching active events count', err);
+        this.cdr.detectChanges();
+      }
     });
   }
 

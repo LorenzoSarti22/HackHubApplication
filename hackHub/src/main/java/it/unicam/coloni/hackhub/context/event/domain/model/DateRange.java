@@ -20,7 +20,9 @@ public class DateRange {
       return new DateRange(startDate, endDate);
    }
 
+   @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
    private LocalDate startDate;
+   @com.fasterxml.jackson.annotation.JsonFormat(pattern = "yyyy-MM-dd")
    private LocalDate endDate;
 
    public boolean overlap(DateRange range) {

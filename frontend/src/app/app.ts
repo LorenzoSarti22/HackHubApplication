@@ -10,7 +10,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.css'
 })
 export class App {
+  isEventsMenuOpen = false;
+
   constructor(public router: Router) { }
+
+  toggleEventsMenu() {
+    this.isEventsMenuOpen = !this.isEventsMenuOpen;
+  }
+
   isNotLogin(): boolean {
     return this.router.url !== '/login' && this.router.url !== '/register';
   }
