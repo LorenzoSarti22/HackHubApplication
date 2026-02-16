@@ -24,6 +24,7 @@ services:
       # Disabilita il check dei metadati che causa il crash del driver Postgres
       - SPRING_JPA_PROPERTIES_HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS=false
       - JWT_SECRET=xz41wVXiG3IZq2a461ZBfdECYHXtHk+ffsZpvP7wWEY=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
       - db
     networks:
