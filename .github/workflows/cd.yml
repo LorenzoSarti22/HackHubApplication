@@ -55,12 +55,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      
     steps:
       # ---------------------------------------------------------
       # Runs ONLY if SERVER_HOST secret is configured
       # ---------------------------------------------------------
       - name: 🚀 Deploy to Production Server (Real)
-        if: secrets.SERVER_HOST != ''
+        if: env.SERVER_HOST != ''
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
