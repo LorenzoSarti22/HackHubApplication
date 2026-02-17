@@ -45,11 +45,8 @@ dependencies {
     implementation ("io.jsonwebtoken:jjwt-api:0.13.0")
     runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.13.0")
     runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.13.0")
-
-
-
-
-//    compileOnly("io.github.wimdeblauwe:error-handling-spring-boot-starter:4.6.0")
+    
+//compileOnly("io.github.wimdeblauwe:error-handling-spring-boot-starter:4.6.0")
 
 }
 
