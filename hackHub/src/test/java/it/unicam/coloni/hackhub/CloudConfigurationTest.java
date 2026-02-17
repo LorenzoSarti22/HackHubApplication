@@ -29,8 +29,8 @@ class CloudConfigurationTest {
         assertTrue(content.contains("postgres_data:/var/lib/postgresql/data"),
                 "Il volume di persistenza per PostgreSQL non è configurato correttamente!");
 
-        assertTrue(content.contains("jdbc:postgresql://db:5432/hackhub_db"),
-                "L'URL del database deve puntare al servizio 'hackhub-db'!");
+        assertTrue(content.contains("jdbc:postgresql://${DB_HOST}:${DB_PORT}/${POSTGRES_DB}"),
+                "L'URL del database deve essere parametrizzato con variabili d'ambiente!");
 
         assertTrue(content.contains("depends_on:"), "Il backend dovrebbe dipendere dal db.");
     }

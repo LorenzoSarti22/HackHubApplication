@@ -60,7 +60,7 @@ jobs:
       # Runs ONLY if SERVER_HOST secret is configured
       # ---------------------------------------------------------
       - name: 🚀 Deploy to Production Server (Real)
-        if: ${{ secrets.SERVER_HOST != '' }}
+        if: secrets.SERVER_HOST != ''
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
