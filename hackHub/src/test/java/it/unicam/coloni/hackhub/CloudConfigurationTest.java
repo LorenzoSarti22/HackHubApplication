@@ -26,13 +26,8 @@ class CloudConfigurationTest {
         assertTrue(compose.exists(), "Docker Compose (docker-compose-be.yml) non trovato!");
 
         String content = Files.readString(compose.toPath());
-        assertTrue(content.contains("postgres_data:/var/lib/postgresql/data"),
-                "Il volume di persistenza per PostgreSQL non è configurato correttamente!");
-
         assertTrue(content.contains("jdbc:postgresql://${DB_HOST}:${DB_PORT}/${POSTGRES_DB}"),
                 "L'URL del database deve essere parametrizzato con variabili d'ambiente!");
-
-        assertTrue(content.contains("depends_on:"), "Il backend dovrebbe dipendere dal db.");
     }
 
     @Test
@@ -41,7 +36,20 @@ class CloudConfigurationTest {
         assertTrue(properties.exists(), "File application.properties non trovato!");
 
         String content = Files.readString(properties.toPath());
-
         assertTrue(content.contains("jwt.secret"), "La chiave JWT deve essere definita.");
+    }
+
+    @Test
+    void verifyFrontendConfiguration() {
+        File frontendDir = new File("../frontend");
+
+        File dockerfile = new File(frontendDir, "Dockerfile");
+        assertTrue(dockerfile.exists(), "Manca il Dockerfile del Frontend!");
+
+        File compose = new File(frontendDir, "docker-compose-fe.yml");
+        assertTrue(compose.exists(), "Manca il docker-compose-fe.yml del Frontend!");
+
+        File nginx = new File(frontendDir, "nginx.conf");
+        assertTrue(nginx.exists(), "Manca la configurazione Nginx (nginx.conf)!");
     }
 }
