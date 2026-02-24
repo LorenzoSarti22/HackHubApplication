@@ -6,6 +6,26 @@ card {
     transform: translateY(-5px);
 }
 
-.border-left-active {
+.border-left-success {
     border-left: 0.5rem solid #1cc88a !important;
+}
+
+.border-left-warning {
+    border-left: 0.5rem solid #f6c23e !important;
+}
+
+.border-left-primary {
+    border-left: 0.5rem solid #4e73df !important;
+}
+
+.border-left-info {
+    border-left: 0.5rem solid #36b9cc !important;
+}
+
+.border-left-secondary {
+    border-left: 0.5rem solid #858796 !important;
+}
+
+.border-left-danger {
+    border-left: 0.5rem solid #e74a3b !important;
 }

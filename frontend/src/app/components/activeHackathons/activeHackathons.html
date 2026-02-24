@@ -25,7 +25,7 @@
 
     <!-- Generate a column for each event -->
     <div *ngFor="let event of events" class="col-xl-4 col-md-6 mb-4">
-      <div class="card shadow h-100 py-2 border-left-active">
+      <div class="card shadow h-100 py-2" [ngClass]="'border-left-' + getStatusColor(event.status)">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
@@ -35,7 +35,7 @@
                 <strong>Inizio:</strong> {{ event?.runningPeriod?.startDate | date:'dd MMM yyyy' }}<br>
                 <strong>Fine:</strong> {{ event?.runningPeriod?.endDate | date:'dd MMM yyyy' }}
               </div>
-              <button class="btn btn-primary btn-sm btn-icon-split">
+              <button class="btn btn-primary btn-sm btn-icon-split" (click)="openDetails(event)">
                 <span class="icon text-white-50">
                   <i class="bi bi-info-circle"></i>
                 </span>
@@ -63,6 +63,98 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- Modal Backdrop -->
+  <div class="modal-backdrop fade show" *ngIf="selectedEvent" style="z-index: 1040;"></div>
+
+  <!-- Detailed Modal -->
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" *ngIf="selectedEvent" style="z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-bold text-primary">{{ selectedEvent.name }}</h5>
+          <button type="button" class="btn-close" (click)="closeDetails()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Alerts -->
+          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ errorMessage }}
+            <button type="button" class="btn-close" (click)="errorMessage = null" aria-label="Close"></button>
+          </div>
+
+          <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ successMessage }}
+            <button type="button" class="btn-close" (click)="successMessage = null" aria-label="Close"></button>
+          </div>
+
+          <div class="mb-3">
+            <span class="badge" [ngClass]="'bg-' + getStatusColor(selectedEvent.status)" style="font-size: 0.9rem;">
+              Stato: {{ selectedEvent.status }}
+            </span>
+          </div>
+
+          <p>
+            <strong><i class="bi bi-calendar-range me-2"></i>Periodo:</strong><br>
+            {{ selectedEvent.runningPeriod?.startDate | date:'dd MMM yyyy' }} -
+            {{ selectedEvent.runningPeriod?.endDate | date:'dd MMM yyyy' }}
+          </p>
+
+          <p *ngIf="selectedEvent.rulesUrl">
+            <strong><i class="bi bi-file-earmark-pdf me-2"></i>Regolamento:</strong><br>
+            <a [href]="selectedEvent.rulesUrl" target="_blank" class="text-decoration-none">
+              Scarica PDF <i class="bi bi-box-arrow-up-right small"></i>
+            </a>
+          </p>
+
+          <!-- Organizer Actions Area -->
+          <div *ngIf="isOrganizer" class="mt-4 border-top pt-3 bg-light p-3 rounded">
+            <h6 class="fw-bold text-dark mb-3"><i class="bi bi-shield-lock me-2"></i>Area Organizzatore</h6>
+
+            <!-- Default Action Buttons -->
+            <div *ngIf="!pendingAction">
+              <button *ngIf="selectedEvent.status === 'SUBSCRIPTION'" class="btn btn-warning w-100 mb-2"
+                (click)="updateStatus(selectedEvent.eventId, 'close-sub')">
+                <i class="bi bi-door-closed me-2"></i>Chiudi Iscrizioni
+              </button>
+
+              <button *ngIf="selectedEvent.status === 'WAITING'" class="btn btn-success w-100 mb-2"
+                (click)="updateStatus(selectedEvent.eventId, 'start')">
+                <i class="bi bi-play-circle me-2"></i>Avvia Hackathon
+              </button>
+
+              <button *ngIf="selectedEvent.status === 'RUNNING'" class="btn btn-danger w-100 mb-2"
+                (click)="updateStatus(selectedEvent.eventId, 'stop')">
+                <i class="bi bi-stop-circle me-2"></i>Termina Hackathon
+              </button>
+
+              <p *ngIf="selectedEvent.status === 'EVALUATING' || selectedEvent.status === 'EVALUATED'"
+                class="text-muted small text-center mb-0">
+                L'evento è in fase di valutazione.
+              </p>
+            </div>
+
+            <!-- Confirmation UI -->
+            <div *ngIf="pendingAction" class="alert alert-warning border-warning">
+              <p class="mb-3 fw-bold text-dark">
+                <i class="bi bi-question-circle-fill me-2"></i>Sei sicuro di voler cambiare lo stato?
+              </p>
+              <div class="d-flex gap-2">
+                <button class="btn btn-secondary flex-grow-1" (click)="cancelStatusChange()">Annulla</button>
+                <button class="btn btn-primary flex-grow-1" (click)="confirmStatusChange()">Conferma</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeDetails()">Chiudi</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

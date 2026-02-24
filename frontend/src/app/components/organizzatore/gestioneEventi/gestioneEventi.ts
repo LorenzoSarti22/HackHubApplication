@@ -56,7 +56,7 @@ export class GestioneEventi {
       console.log('Parsed End Date:', endDate);
 
       if (endDate < startDate) {
-        this.errorMessage = 'La data di fine non può essere antecendente alla data di inizio.';
+        this.errorMessage = 'La data di fine non può essere antecedente alla data di inizio.';
         this.cdr.detectChanges();
         return;
       }
