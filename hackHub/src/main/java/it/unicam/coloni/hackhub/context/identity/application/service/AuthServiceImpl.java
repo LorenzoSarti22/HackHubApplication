@@ -28,12 +28,11 @@ public class AuthServiceImpl implements AuthService {
     private final JWTHelper jwtHelper;
     private final AuthenticationManager authenticationManager;
     private final PasswordHelper passwordHelper;
-
     private final List<UserRegistrationObserver> userRegistrationObservers;
 
-
     @Autowired
-    public AuthServiceImpl(UserRepository repo, UserMapper mapper, PasswordHelper passHandler, JWTHelper jHelper, AuthenticationManager authManager, List<UserRegistrationObserver> observers) {
+    public AuthServiceImpl(UserRepository repo, UserMapper mapper, PasswordHelper passHandler, JWTHelper jHelper,
+                           AuthenticationManager authManager, List<UserRegistrationObserver> observers) {
         userRepository = repo;
         userMapper = mapper;
         jwtHelper = jHelper;
@@ -47,27 +46,21 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(), request.getPassword()
-                )
-        );
+                ));
 
         
         return new LoginResponse(jwtHelper.generate(authentication, 1));
     }
 
-
-
-
-
-
     @Override
     @Transactional
-    public UserDto signUp(SignUpRequest request){
-       System.out.println("Processing SignUp Request: " + request);
-       User user = userMapper.fromSignUp(request);
-       user.setPassword(passwordHelper.encode(request.getPassword()));
-       User saved = userRepository.save(user);
-       notifyObservers(user);
-       return userMapper.toDto(saved);
+    public UserDto signUp(SignUpRequest request) {
+        System.out.println("Processing SignUp Request: " + request);
+        User user = userMapper.fromSignUp(request);
+        user.setPassword(passwordHelper.encode(request.getPassword()));
+        User saved = userRepository.save(user);
+        notifyObservers(user);
+        return userMapper.toDto(saved);
     }
 
     @Override
@@ -82,6 +75,14 @@ public class AuthServiceImpl implements AuthService {
 
 
     }
+
+    @Override
+    public List<UserDto> getUsersByRole(it.unicam.coloni.hackhub.shared.domain.enums.PlatformRoles role) {
+        return userRepository.findByRole(role).stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
+
 
     private void notifyObservers(User user){
         for(UserRegistrationObserver observer: userRegistrationObservers){

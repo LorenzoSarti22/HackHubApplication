@@ -79,6 +79,14 @@ public class UserController {
                 userMapper.toDto(userService.getLoggedUser()));
     }
 
+    @GetMapping("/role/{role}")
+    public ApiResponse<java.util.List<UserDto>> getUsersByRole(
+            @PathVariable it.unicam.coloni.hackhub.shared.domain.enums.PlatformRoles role) {
+        return factory.createSuccessResponse(
+                "Utenti recuperati con successo",
+                userService.getUsersByRole(role));
+    }
+
     // @PatchMapping("/{id}")
     // public ApiResponse<BaseUserDTO> updateUser(@PathVariable(name = "id") Long
     // id, @RequestBody UpdateUserRequest request){

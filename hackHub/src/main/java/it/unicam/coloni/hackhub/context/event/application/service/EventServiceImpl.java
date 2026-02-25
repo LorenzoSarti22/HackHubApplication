@@ -46,6 +46,9 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private AssignmentMapper assignmentMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     @Transactional
     public EventDto createEvent(EventCreationRequest request) {
@@ -123,7 +126,11 @@ public class EventServiceImpl implements EventService {
         EventDto eventDto = eventMapper.toDto(event);
 
         List<AssignmentDto> staff = event.getStaff().stream()
-                .map(assignmentMapper::toDto)
+                .map(assignment -> {
+                    AssignmentDto dto = assignmentMapper.toDto(assignment);
+                    userRepository.findById(dto.getUserId()).ifPresent(user -> dto.setUsername(user.getUsername()));
+                    return dto;
+                })
                 .toList();
 
         List<AssessmentDto> assessmentDtos = new ArrayList<>();
@@ -145,8 +152,8 @@ public class EventServiceImpl implements EventService {
                 it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.WAITING,
                 it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.RUNNING,
                 it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATING,
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATED
-        );
+                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATED);
+
         return eventRepository.findByStatusIn(activeStatuses).stream()
                 .map(eventMapper::toDto)
                 .toList();

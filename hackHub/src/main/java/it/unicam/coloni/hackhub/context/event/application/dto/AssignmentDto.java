@@ -10,7 +10,11 @@ public class AssignmentDto {
 
     private PlatformRoles role;
 
+    private String username;
+
     private Long userId;
 
     private Long teamId;
+
+
 }
