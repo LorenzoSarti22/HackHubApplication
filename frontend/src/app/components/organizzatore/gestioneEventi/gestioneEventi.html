@@ -11,7 +11,27 @@
       <h6 class="m-0 font-weight-bold text-primary">Eventi</h6>
     </div>
     <div class="card-body">
-      <div class="table-responsive">
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error" class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+
+      <!-- Global Success State -->
+      <div *ngIf="globalSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        {{ globalSuccessMessage }}
+        <button type="button" class="btn-close" (click)="globalSuccessMessage = null" aria-label="Close"></button>
+      </div>
+
+      <div class="table-responsive" *ngIf="!loading && !error">
         <table class="table table-hover border">
           <thead class="table-light">
             <tr>
@@ -22,22 +42,57 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="align-middle ">HackHub Global Challenge</td>
-              <td class="align-middle">15/06/2026</td>
-              <td class="align-middle"><span class="badge bg-success">Attivo</span></td>
+            <tr *ngFor="let event of events">
+              <td class="align-middle fw-bold">{{ event.name }}</td>
+              <td class="align-middle">{{ event.runningPeriod?.startDate | date:'dd/MM/yyyy' }}</td>
+              <td class="align-middle">
+                <span class="badge" [ngClass]="'bg-' + getStatusColor(event.status)">
+                  {{ event.status }}
+                </span>
+              </td>
               <td class="text-center">
-                <button class="btn btn-sm btn-outline-warning me-2" data-bs-toggle="modal"
-                  data-bs-target="#modalEvento">
+                <button class="btn btn-sm btn-outline-warning me-2" title="Modifica" data-bs-toggle="modal"
+                  data-bs-target="#editModal" (click)="openEditModal(event)">
                   <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger">
+                <button class="btn btn-sm btn-outline-danger" title="Elimina" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal" (click)="confirmDelete(event)">
                   <i class="bi bi-trash"></i>
                 </button>
               </td>
             </tr>
+            <tr *ngIf="events.length === 0">
+              <td colspan="4" class="text-center py-4 text-muted">
+                Nessun hackathon creato finora. Clicca su "Nuovo Hackathon" per iniziare!
+              </td>
+            </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="deleteModalLabel">Conferma Eliminazione</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="deleteErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ deleteErrorMessage }}
+          <button type="button" class="btn-close" (click)="deleteErrorMessage = null" aria-label="Close"></button>
+        </div>
+        Sei sicuro di voler eliminare l'hackathon <strong>{{ eventToDelete?.name }}</strong>? Questa azione è
+        irreversibile.
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="closeDeleteModalBtn" class="btn btn-secondary"
+          data-bs-dismiss="modal">Annulla</button>
+        <button type="button" class="btn btn-danger" (click)="deleteEvent()">Elimina</button>
       </div>
     </div>
   </div>
@@ -90,6 +145,127 @@
       <div class="modal-footer">
         <button type="button" id="closeModalBtn" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
         <button type="button" class="btn btn-primary" (click)="createEvent()">Salva Evento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true"
+  (hidden.bs.modal)="closeEditModal()">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" *ngIf="selectedEvent">
+      <div class="modal-header bg-warning text-dark">
+        <h5 class="modal-title" id="editModalLabel"><i class="bi bi-pencil-square me-2"></i>Gestione: {{
+          selectedEvent.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Alerts Edit -->
+        <div *ngIf="editErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          {{ editErrorMessage }}
+          <button type="button" class="btn-close" (click)="editErrorMessage = null" aria-label="Close"></button>
+        </div>
+
+        <div *ngIf="editSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+          <i class="bi bi-check-circle-fill me-2"></i>
+          {{ editSuccessMessage }}
+          <button type="button" class="btn-close" (click)="editSuccessMessage = null" aria-label="Close"></button>
+        </div>
+
+        <!-- Event Summary -->
+        <div class="mb-4">
+          <span class="badge" [ngClass]="'bg-' + getStatusColor(selectedEvent.status)" style="font-size: 0.9rem;">
+            Stato Attuale: {{ selectedEvent.status }}
+          </span>
+        </div>
+
+        <!-- Staff Display -->
+        <div class="mb-4">
+          <h6 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-people-fill me-2"></i>Staff Assegnato</h6>
+          <div class="row g-2 mt-1" *ngIf="eventStaff && eventStaff.length > 0; else noStaff">
+            <div class="col-sm-6" *ngFor="let staff of eventStaff">
+              <div class="d-flex align-items-center p-2 rounded border bg-light h-100">
+                <i class="bi bi-person-circle fs-4 text-secondary me-3"></i>
+                <div>
+                  <h6 class="mb-0 fw-bold">{{ staff.username }}</h6>
+                  <small class="text-muted text-uppercase" style="font-size: 0.70rem; letter-spacing: 0.5px;">{{
+                    staff.role }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noStaff>
+            <p class="text-muted small">Nessun membro dello staff ancora assegnato a questo evento.</p>
+          </ng-template>
+        </div>
+
+        <!-- Staff Assignment Form -->
+        <div class="mb-4 bg-light p-3 rounded">
+          <h6 class="fw-bold text-dark mb-3"><i class="bi bi-person-plus me-2"></i>Aggiungi Staff</h6>
+
+          <div class="input-group mb-2">
+            <select class="form-select" [(ngModel)]="selectedJudgeId">
+              <option [ngValue]="null" disabled selected>Scegli un giudice...</option>
+              <option *ngFor="let judge of judges" [value]="judge.id">{{ judge.username }}</option>
+            </select>
+            <button class="btn btn-outline-primary" type="button" (click)="addJudge()" [disabled]="!selectedJudgeId">
+              <i class="bi bi-person-check me-1"></i>Aggiungi Giudice
+            </button>
+          </div>
+
+          <div class="input-group">
+            <select class="form-select" [(ngModel)]="selectedMentorId">
+              <option [ngValue]="null" disabled selected>Scegli un mentore...</option>
+              <option *ngFor="let mentor of mentors" [value]="mentor.id">{{ mentor.username }}</option>
+            </select>
+            <button class="btn btn-outline-primary" type="button" (click)="addMentor()" [disabled]="!selectedMentorId">
+              <i class="bi bi-person-check me-1"></i>Aggiungi Mentore
+            </button>
+          </div>
+        </div>
+
+        <!-- Status Management Actions -->
+        <div class="mt-4 border-top pt-3">
+          <h6 class="fw-bold text-dark mb-3"><i class="bi bi-gear-fill me-2"></i>Modifica stato evento</h6>
+
+          <div *ngIf="!pendingAction">
+            <button *ngIf="selectedEvent.status === 'SUBSCRIPTION'" class="btn btn-warning me-2 mb-2"
+              (click)="updateStatus(selectedEvent.eventId, 'close-sub')">
+              <i class="bi bi-door-closed me-2"></i>Chiudi Iscrizioni
+            </button>
+
+            <button *ngIf="selectedEvent.status === 'WAITING'" class="btn btn-success me-2 mb-2"
+              (click)="updateStatus(selectedEvent.eventId, 'start')">
+              <i class="bi bi-play-circle me-2"></i>Avvia Hackathon
+            </button>
+
+            <button *ngIf="selectedEvent.status === 'RUNNING'" class="btn btn-danger me-2 mb-2"
+              (click)="updateStatus(selectedEvent.eventId, 'stop')">
+              <i class="bi bi-stop-circle me-2"></i>Termina Hackathon
+            </button>
+
+            <p *ngIf="selectedEvent.status === 'EVALUATING' || selectedEvent.status === 'EVALUATED'"
+              class="text-muted small mb-0">
+              L'evento è in fase di valutazione.
+            </p>
+          </div>
+
+          <!-- Confirmation UI -->
+          <div *ngIf="pendingAction" class="alert alert-warning border-warning mt-2">
+            <p class="fw-bold text-dark mb-2"><i class="bi bi-question-circle-fill me-2"></i>Sei sicuro di voler far
+              avanzare lo stato dell'evento?</p>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-secondary" (click)="cancelStatusChange()">Annulla</button>
+              <button class="btn btn-sm btn-primary" (click)="confirmStatusChange()">Conferma</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
       </div>
     </div>
   </div>

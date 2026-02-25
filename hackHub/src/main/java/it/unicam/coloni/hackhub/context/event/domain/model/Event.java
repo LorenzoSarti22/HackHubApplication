@@ -63,8 +63,8 @@ public class Event extends BaseEntity {
     }
 
     public Assignment addJudge(StaffMember judge, List<DateRange> busyPeriods) {
-        for(DateRange range : busyPeriods){
-            if(range.overlap(this.runningPeriod)){
+        for (DateRange range : busyPeriods) {
+            if (range.overlap(this.runningPeriod)) {
                 throw new IllegalStateException("The given user is not available in the period of the event");
             }
         }
@@ -81,15 +81,8 @@ public class Event extends BaseEntity {
     }
 
     private void checkIfDeletable() {
-        if (this.getStatus() != EventStatus.CLOSED) {
+        if (this.getStatus() != EventStatus.CLOSED && this.getStatus() != EventStatus.SUBSCRIPTION) {
             throw new IllegalStateException("Unable to delete this event, its current status is: " + this.getStatus());
-        }
-    }
-
-    private void checkAvailability(List<DateRange> busyPeriods) {
-        if (busyPeriods.stream()
-                .anyMatch(period -> period.overlap(this.runningPeriod))) {
-            throw new IllegalStateException("The given user is not available in the period of the event");
         }
     }
 

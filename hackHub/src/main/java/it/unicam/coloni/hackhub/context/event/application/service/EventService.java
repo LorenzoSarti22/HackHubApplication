@@ -11,6 +11,8 @@ public interface EventService {
 
     java.util.List<EventDto> getActiveEvents();
 
+    java.util.List<EventDto> getOrganizerEvents();
+
     EventDto createEvent(EventCreationRequest request);
 
     EventDto fetchById(Long id);

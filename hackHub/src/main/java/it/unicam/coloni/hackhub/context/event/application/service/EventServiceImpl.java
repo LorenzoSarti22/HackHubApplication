@@ -12,6 +12,7 @@ import it.unicam.coloni.hackhub.context.identity.application.service.AuthService
 import it.unicam.coloni.hackhub.context.event.domain.repository.EventRepository;
 import it.unicam.coloni.hackhub.context.identity.domain.model.User;
 import it.unicam.coloni.hackhub.context.identity.domain.repository.UserRepository;
+import it.unicam.coloni.hackhub.shared.domain.enums.PlatformRoles;
 
 import it.unicam.coloni.hackhub.context.assessment.application.dto.AssessmentDto;
 import it.unicam.coloni.hackhub.context.assessment.application.service.AssessmentService;
@@ -32,7 +33,6 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     EventRepository eventRepository;
-
 
     @Autowired
     private List<EventCreationStrategy> strategies;
@@ -155,6 +155,15 @@ public class EventServiceImpl implements EventService {
                 it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATED);
 
         return eventRepository.findByStatusIn(activeStatuses).stream()
+                .map(eventMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<EventDto> getOrganizerEvents() {
+        User organizer = authService.getLoggedUser();
+        return eventRepository.findByUserIdAndRole(organizer.getId(), PlatformRoles.ORGANIZER)
+                .stream()
                 .map(eventMapper::toDto)
                 .toList();
     }

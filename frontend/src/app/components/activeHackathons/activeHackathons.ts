@@ -16,35 +16,14 @@ export class ActiveHackathons implements OnInit {
     loading = true;
     error: string | null = null;
     selectedEvent: any | null = null;
-    isOrganizer: boolean = false;
-    successMessage: string | null = null;
-    errorMessage: string | null = null;
-    pendingAction: { eventId: number, action: string } | null = null;
-    judges: any[] = [];
-    mentors: any[] = [];
     eventStaff: any[] = [];
-    selectedJudgeId: number | null = null;
-    selectedMentorId: number | null = null;
 
     constructor(private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
     ngOnInit() {
-        this.checkOrganizer();
         this.loadEvents();
     }
 
-    checkOrganizer() {
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                this.isOrganizer = payload.role === 'ORGANIZER';
-            } catch (e) {
-                console.error('Error parsing token', e);
-                this.isOrganizer = false;
-            }
-        }
-    }
 
     loadEvents() {
         this.loading = true;
@@ -68,11 +47,6 @@ export class ActiveHackathons implements OnInit {
 
     openDetails(event: any) {
         this.selectedEvent = event;
-        this.successMessage = null;
-        this.errorMessage = null;
-        this.pendingAction = null;
-        this.selectedJudgeId = null;
-        this.selectedMentorId = null;
         this.eventStaff = [];
 
         // Fetch details (including staff and assessments)
@@ -85,146 +59,11 @@ export class ActiveHackathons implements OnInit {
             },
             error: (err) => console.error('Failed to load event details', err)
         });
-
-        if (this.isOrganizer) {
-            this.loadJudges();
-            this.loadMentors();
-        }
-    }
-
-    loadJudges() {
-        this.http.get<any>('/api/user/role/JUDGE').subscribe({
-            next: (res) => {
-                console.log('Judges response:', res);
-                if (res.success && res.data) {
-                    this.judges = res.data;
-                } else {
-                    this.judges = [];
-                }
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error('Failed to load judges', err);
-                this.judges = [];
-                this.cdr.detectChanges();
-            }
-        });
-    }
-
-    loadMentors() {
-        this.http.get<any>('/api/user/role/MENTOR').subscribe({
-            next: (res) => {
-                console.log('Mentors response:', res);
-                if (res.success && res.data) {
-                    this.mentors = res.data;
-                } else {
-                    this.mentors = [];
-                }
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error('Failed to load mentors', err);
-                this.mentors = [];
-                this.cdr.detectChanges();
-            }
-        });
     }
 
     closeDetails() {
         this.selectedEvent = null;
-        this.successMessage = null;
-        this.errorMessage = null;
-        this.pendingAction = null;
-        this.judges = [];
-        this.mentors = [];
         this.eventStaff = [];
-        this.selectedJudgeId = null;
-        this.selectedMentorId = null;
-    }
-
-    updateStatus(eventId: number, action: string) {
-        this.successMessage = null;
-        this.errorMessage = null;
-        this.pendingAction = { eventId, action };
-    }
-
-    cancelStatusChange() {
-        this.pendingAction = null;
-    }
-
-    confirmStatusChange() {
-        if (!this.pendingAction) return;
-
-        const { eventId, action } = this.pendingAction;
-
-        this.http.patch<any>(`/api/event/${eventId}/${action}`, {}).subscribe({
-            next: (response) => {
-                if (response.success) {
-                    this.successMessage = 'Stato aggiornato con successo!';
-                    this.pendingAction = null;
-                    this.cdr.detectChanges();
-                    setTimeout(() => {
-                        this.successMessage = null;
-                        this.closeDetails();
-                        this.loadEvents();
-                    }, 1500);
-                } else {
-                    this.errorMessage = 'Errore: ' + response.message;
-                    this.pendingAction = null;
-                    this.cdr.detectChanges();
-                }
-            },
-            error: (err) => {
-                console.error(err);
-                this.errorMessage = 'Errore durante l\'aggiornamento dello stato.';
-                this.pendingAction = null;
-                this.cdr.detectChanges();
-            }
-        });
-    }
-
-    addJudge() {
-        if (!this.selectedEvent || !this.selectedJudgeId) return;
-
-        const payload = {
-            eventId: this.selectedEvent.eventId,
-            userId: this.selectedJudgeId
-        };
-
-        this.http.post<any>('/api/staff/judge', payload).subscribe({
-            next: (res) => {
-                this.successMessage = 'Giudice aggiunto con successo!';
-                this.selectedJudgeId = null;
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error(err);
-                this.errorMessage = 'Errore durante l\'aggiunta del giudice.';
-                this.cdr.detectChanges();
-            }
-        });
-    }
-
-    addMentor(): void {
-        if (!this.selectedEvent || !this.selectedMentorId) return;
-
-        const payload = {
-            eventId: this.selectedEvent.eventId,
-            userId: this.selectedMentorId
-        };
-
-        this.http.post<any>('/api/staff/mentor', payload).subscribe({
-            next: (res) => {
-                this.successMessage = 'Mentore aggiunto con successo!';
-                this.selectedMentorId = null;
-                this.cdr.detectChanges();
-            },
-            error: (err) => {
-                console.error(err);
-                this.errorMessage = 'Errore durante l\'aggiunta del mentore.';
-                this.cdr.detectChanges();
-            }
-        });
     }
 
     getStatusColor(status: string): string {

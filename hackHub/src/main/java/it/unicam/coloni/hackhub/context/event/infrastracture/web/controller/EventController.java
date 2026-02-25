@@ -79,7 +79,8 @@ public class EventController {
     @PreAuthorize("hasAnyAuthority('ORGANIZER')")
     @PatchMapping("/{id}/stopVals")
     public ApiResponse<EventDto> stopValuating(@PathVariable Long id) {
-        return responseFactory.createSuccessResponse("Event valuations closed successfully", eventService.stopValuating(id));
+        return responseFactory.createSuccessResponse("Event valuations closed successfully",
+                eventService.stopValuating(id));
     }
 
     @PreAuthorize("hasAnyAuthority('ORGANIZER')")
@@ -90,6 +91,14 @@ public class EventController {
 
     @GetMapping("/active")
     public ApiResponse<java.util.List<EventDto>> getActiveEvents() {
-        return responseFactory.createSuccessResponse("Active events fetched successfully", eventService.getActiveEvents());
+        return responseFactory.createSuccessResponse("Active events fetched successfully",
+                eventService.getActiveEvents());
+    }
+
+    @GetMapping("/organizer")
+    @PreAuthorize("hasAnyAuthority('ORGANIZER')")
+    public ApiResponse<java.util.List<EventDto>> getOrganizerEvents() {
+        return responseFactory.createSuccessResponse("Organizer events fetched successfully",
+                eventService.getOrganizerEvents());
     }
 }
