@@ -317,7 +317,7 @@ export class GestioneEventi implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.editErrorMessage = 'Errore durante l\'aggiunta del giudice. Potrebbe essere già presente.';
+        this.editErrorMessage = 'Errore durante l\'aggiunta del giudice. Potrebbe essere già presente in questo evento o essere già assegnato ad un altro evento per la stessa data.';
         this.cdr.detectChanges();
       }
     });
@@ -340,7 +340,7 @@ export class GestioneEventi implements OnInit {
       },
       error: (err) => {
         console.error(err);
-        this.editErrorMessage = 'Errore durante l\'aggiunta del mentore. Potrebbe essere già presente.';
+        this.editErrorMessage = 'Errore durante l\'aggiunta del mentore. Potrebbe essere già presente in questo evento o essere già assegnato ad un altro evento per la stessa data.';
         this.cdr.detectChanges();
       }
     });

@@ -37,6 +37,7 @@
             <tr>
               <th>Titolo Evento</th>
               <th>Data Inizio</th>
+              <th>Data Fine</th>
               <th>Stato</th>
               <th class="text-center">Azioni</th>
             </tr>
@@ -45,6 +46,7 @@
             <tr *ngFor="let event of events">
               <td class="align-middle fw-bold">{{ event.name }}</td>
               <td class="align-middle">{{ event.runningPeriod?.startDate | date:'dd/MM/yyyy' }}</td>
+              <td class="align-middle">{{ event.runningPeriod?.endDate | date:'dd/MM/yyyy' }}</td>
               <td class="align-middle">
                 <span class="badge" [ngClass]="'bg-' + getStatusColor(event.status)">
                   {{ event.status }}
