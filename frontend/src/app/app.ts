@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -33,16 +33,16 @@ export class App {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
 
-      // Check expiration
+      // Controllo della scadenza
       if (payload.exp && Date.now() >= payload.exp * 1000) {
         this.logout();
         return null;
       }
 
-      // Read role from claim
+      // Leggi il ruolo dal certificato (claim)
       return { username: payload.sub, role: payload.role };
     } catch (e) {
-      console.error('Error decoding token', e);
+      console.error('Errore durante la decodifica del token', e);
       return null;
     }
   }

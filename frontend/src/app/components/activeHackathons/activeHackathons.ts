@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './activeHackathons.html',
     styleUrl: './activeHackathons.css'
 })
+
 export class ActiveHackathons implements OnInit {
     events: any[] = [];
     loading = true;
@@ -49,7 +50,7 @@ export class ActiveHackathons implements OnInit {
         this.selectedEvent = event;
         this.eventStaff = [];
 
-        // Fetch details (including staff and assessments)
+        // Recupera i dettagli (inclusi staff e valutazioni)
         this.http.get<any>(`/api/event/${event.eventId}/details`).subscribe({
             next: (res) => {
                 if (res.success && res.data && res.data.staff) {

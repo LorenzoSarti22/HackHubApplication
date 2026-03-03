@@ -140,7 +140,7 @@ export class GestioneEventi implements OnInit {
         setTimeout(() => {
           document.getElementById('closeModalBtn')?.click();
           this.resetForm();
-          this.loadEvents(); // Reload the list after creation
+          this.loadEvents(); // Ricarica la lista dopo la creazione
         }, 1500);
       },
       error: (error) => {
@@ -196,7 +196,7 @@ export class GestioneEventi implements OnInit {
     this.selectedMentorId = null;
     this.eventStaff = [];
 
-    // Fetch details (including staff and assessments)
+    // Recupera i dettagli (inclusi staff e valutazioni)
     this.http.get<any>(`/api/event/${event.eventId}/details`).subscribe({
       next: (res) => {
         if (res.success && res.data && res.data.staff) {

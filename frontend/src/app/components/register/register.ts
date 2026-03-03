@@ -1,14 +1,14 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf, ngFor, etc.
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router'; // Import RouterModule for routerLink
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { PlatformRoles } from '../../enums/platform-roles';
 
 @Component({
     selector: 'app-register',
     standalone: true,
-    imports: [CommonModule, FormsModule, HttpClientModule, RouterModule], // Add RouterModule here
+    imports: [CommonModule, FormsModule, RouterModule],
     templateUrl: './register.html',
     styleUrl: './register.css'
 })
@@ -22,11 +22,10 @@ export class Register {
         birthDate: '',
         gender: 'MALE',
         role: PlatformRoles.STUDENT,
-        photoUrl: '' // Optional or default
+        photoUrl: ''
     };
     errorMessage: string = '';
 
-    // Expose enum to template
     roles = Object.values(PlatformRoles);
 
     constructor(private http: HttpClient, private router: Router, private cdr: ChangeDetectorRef) { }
@@ -39,20 +38,21 @@ export class Register {
                 this.router.navigate(['/login']);
             },
             error: (error) => {
-                            console.error('Registration failed', error);
-                            this.errorMessage = 'Registrazione fallita. Riprova.';
-                            if (error.error && error.error.message) {
-                                this.errorMessage = error.error.message;
-                                const msg = error.error.message;
-                                if (msg.includes('users_email_key')) {
-                                    this.errorMessage = "L'indirizzo email inserito è già in uso.";
-                                } else if (msg.includes('users_username_key')) {
-                                    this.errorMessage = "L'username inserito è già in uso.";
-                                } else {
-                                    this.errorMessage = msg;
-                                }
-                            }
-                            this.cdr.detectChanges();
-            }});
+                console.error('Registration failed', error);
+                this.errorMessage = 'Registrazione fallita. Riprova.';
+                if (error.error && error.error.message) {
+                    this.errorMessage = error.error.message;
+                    const msg = error.error.message;
+                    if (msg.includes('users_email_key')) {
+                        this.errorMessage = "L'indirizzo email inserito è già in uso.";
+                    } else if (msg.includes('users_username_key')) {
+                        this.errorMessage = "L'username inserito è già in uso.";
+                    } else {
+                        this.errorMessage = msg;
+                    }
+                }
+                this.cdr.detectChanges();
+            }
+        });
     }
 }

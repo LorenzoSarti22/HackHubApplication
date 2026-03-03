@@ -12,19 +12,19 @@
     </div>
     <div class="card-body">
 
-      <!-- Loading State -->
+      <!-- Stato di Caricamento -->
       <div *ngIf="loading" class="text-center py-4">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
 
-      <!-- Error State -->
+      <!-- Stato di Errore -->
       <div *ngIf="error" class="alert alert-danger" role="alert">
         {{ error }}
       </div>
 
-      <!-- Global Success State -->
+      <!-- Messaggio di Successo Globale -->
       <div *ngIf="globalSuccessMessage" class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i>
         {{ globalSuccessMessage }}
@@ -108,7 +108,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Alerts -->
+        <!-- Avvisi (Alerts) -->
         <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
           <i class="bi bi-exclamation-triangle-fill me-2"></i>
           {{ errorMessage }}
@@ -163,7 +163,7 @@
       </div>
       <div class="modal-body">
 
-        <!-- Alerts Edit -->
+        <!-- Avvisi in Modifica -->
         <div *ngIf="editErrorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
           <i class="bi bi-exclamation-triangle-fill me-2"></i>
           {{ editErrorMessage }}
@@ -176,14 +176,14 @@
           <button type="button" class="btn-close" (click)="editSuccessMessage = null" aria-label="Close"></button>
         </div>
 
-        <!-- Event Summary -->
+        <!-- Riepilogo Evento -->
         <div class="mb-4">
           <span class="badge" [ngClass]="'bg-' + getStatusColor(selectedEvent.status)" style="font-size: 0.9rem;">
             Stato Attuale: {{ selectedEvent.status }}
           </span>
         </div>
 
-        <!-- Staff Display -->
+        <!-- Visualizzazione Staff -->
         <div class="mb-4">
           <h6 class="fw-bold text-dark border-bottom pb-2"><i class="bi bi-people-fill me-2"></i>Staff Assegnato</h6>
           <div class="row g-2 mt-1" *ngIf="eventStaff && eventStaff.length > 0; else noStaff">
@@ -203,7 +203,7 @@
           </ng-template>
         </div>
 
-        <!-- Staff Assignment Form -->
+        <!-- Modulo Assegnazione Staff -->
         <div class="mb-4 bg-light p-3 rounded">
           <h6 class="fw-bold text-dark mb-3"><i class="bi bi-person-plus me-2"></i>Aggiungi Staff</h6>
 
@@ -228,7 +228,7 @@
           </div>
         </div>
 
-        <!-- Status Management Actions -->
+        <!-- Azioni di Gestione Stato -->
         <div class="mt-4 border-top pt-3">
           <h6 class="fw-bold text-dark mb-3"><i class="bi bi-gear-fill me-2"></i>Modifica stato evento</h6>
 
@@ -254,7 +254,7 @@
             </p>
           </div>
 
-          <!-- Confirmation UI -->
+          <!-- Interfaccia di Conferma -->
           <div *ngIf="pendingAction" class="alert alert-warning border-warning mt-2">
             <p class="fw-bold text-dark mb-2"><i class="bi bi-question-circle-fill me-2"></i>Sei sicuro di voler far
               avanzare lo stato dell'evento?</p>

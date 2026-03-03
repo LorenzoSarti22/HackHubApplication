@@ -23,7 +23,7 @@ export class Dashboard implements OnInit {
         console.log('Dashboard active events response', response);
         if (response.success && response.data) {
           this.activeEventsCount = response.data.length;
-          // Ensure view updates
+          // Assicura l'aggiornamento della vista
           this.cdr.detectChanges();
         }
       },
@@ -42,8 +42,7 @@ export class Dashboard implements OnInit {
 
       const role = payload.role || payload.roles || payload.authorities;
 
-      // Check if role is exactly 'ORGANIZER' or check generic equality if casing differs
-      // Backend enum is 'ORGANIZER'
+      // Controlla se il ruolo è esattamente 'ORGANIZER' 
       return role === 'ORGANIZER';
     } catch (e) {
       return false;
