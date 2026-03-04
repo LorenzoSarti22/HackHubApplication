@@ -134,8 +134,12 @@ public class EventServiceImpl implements EventService {
                 .toList();
 
         List<AssessmentDto> assessmentDtos = new ArrayList<>();
-        for (AssessmentDto assessment : assessmentService.getAssessmentsByEvent(id)) {
-            assessmentDtos.add(assessment);
+        try {
+            for (AssessmentDto assessment : assessmentService.getAssessmentsByEvent(id)) {
+                assessmentDtos.add(assessment);
+            }
+        } catch (Exception e) {
+            // Ignoriamo le valutazioni se l'utente non è autenticato o non è staff
         }
 
         return EventDetailsDto.builder()
