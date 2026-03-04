@@ -1,7 +1,7 @@
-<div class="container-fluid pt-4">
+<div class="container pt-5 pb-5">
 
-  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-primary ">BENVENUTO IN HUCKHUB!</h1>
+  <div class="d-sm-flex align-items-center justify-content-center mb-5 mt-3">
+    <h1 class="mb-0 text-primary fw-bold text-uppercase" style="font-size: 2.5rem;">BENVENUTO IN HUCKHUB!</h1>
   </div>
 
   <!-- Area Organizzatore -->
@@ -29,67 +29,80 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-2 align-items-center mb-5">
+    <div class="col-lg-5 p-5 text-center">
+      <h3 class="fw-bold text-dark mb-4" style="font-size: 2rem; letter-spacing: -0.5px; line-height: 1.2;">
+        Esplora il nostro mondo
+      </h3>
+      <p class="text-secondary mb-4 mx-auto" style="font-size: 1.1rem; line-height: 1.6;">
+        Benvenuto nel portale dedicato al mondo degli Hackathon. Trova l'evento perfetto per te,
+        metti in mostra le tue abilità e collabora con altri talenti per creare soluzioni innovative!
+      </p>
+      <button type="button" class="btn btn-primary btn-lg px-4 shadow-sm" style="border-radius: 0.5rem;">
+        Scopri di più!</button>
+    </div>
+    <div class="col-lg-7 d-none d-lg-flex justify-content-center align-items-center p-4">
+      <img src="assets/imgIllustration/53528.jpg" alt="Piattaforma HackHub" class="img-fluid"
+           style="max-height: 450px; object-fit: contain;">
+    </div>
+  </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <a routerLink="/activeHackathons" class="text-decoration-none">
-        <div class="card shadow h-100 py-2 border-0 hover-card border-left-active">
-          <div class="card-body">
-            <div class="row no-gutters align-items-center">
-              <div class="col mr-2">
-                <div class=" h5 text-xs font-weight-bold text-gray-900 text-uppercase mb-3">
-                  Hackathon Attivi
+
+  <!-- Visualizza Eventi -->
+  <div class="row mt-5 mb-5 align-items-center">
+
+    <div class="col-lg-5 order-2 order-lg-1">
+      <div class="row">
+        <div class="col-12 mb-4">
+          <a routerLink="/activeHackathons" class="text-decoration-none">
+            <div class="card shadow h-100 py-2 border-0 hover-card border-left-active">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class=" h5 text-xs font-weight-bold text-gray-900 text-uppercase mb-3">
+                      Hackathon Attivi
+                    </div>
+                    <div class="h7 mb-0 font-weight-bold text-gray-800">{{ activeEventsCount }}</div>
+                    <div class="text-muted mt-2" style="font-size: 0.8rem;">Eventi in corso.</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="bi bi-clipboard-check fs-3 text-gray-400"></i>
+                  </div>
                 </div>
-                <div class="h7 mb-0 font-weight-bold text-gray-800">{{ activeEventsCount }}</div>
-              </div>
-              <div class="col-auto">
-                <i class="bi bi-clipboard-check fs-3 text-gray-400"></i>
               </div>
             </div>
-          </div>
+          </a>
         </div>
-      </a>
-    </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card shadow h-100 py-2 border-0 hover-card border-left-concluded">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class=" h5 m-0 font-weight-bold text-xs text-uppercase mb-3">
-                Hackathon Conclusi
+        <div class="col-12 mb-4">
+          <div class="card shadow h-100 py-2 border-0 hover-card border-left-concluded">
+            <div class="card-body">
+              <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                  <div class=" h5 m-0 font-weight-bold text-xs text-uppercase mb-3">
+                    Hackathon Conclusi
+                  </div>
+                  <div class="h7 mb-0 font-weight-bold text-gray-800">0</div>
+                  <div class="text-muted mt-2" style="font-size: 0.8rem;">Eventi già terminati.</div>
+                </div>
+                <div class="col-auto">
+                  <i class="bi bi-clipboard-check-fill fs-3 text-gray-400"></i>
+                </div>
               </div>
-              <div class="h7 mb-0 font-weight-bold text-gray-800">0</div>
-            </div>
-            <div class="col-auto">
-              <i class="bi bi-clipboard-check-fill fs-3 text-gray-400"></i>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-10 mb-4">
-        <div class="card shadow mb-4 border-0">
-          <div class="card-header py-3 bg-white border-bottom">
-            <h6 class=" h5 m-0 font-weight-bold text-uppercase text-xs">Esplora il nostro mondo</h6>
-          </div>
 
-          <div class="card-body">
-            <div class="text-center">
-              <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="assets/imgIllustration/53528.jpg"
-                alt="Illustrazione Hackathon" />
-            </div>
-            <p class="text-dark">
-              Esplora gli hackathon in modo semplice e veloce. Da qui puoi monitorare gli eventi attivi,
-              controllare quelli conclusi e visualizzare i team vincitori.
-            </p>
-            <a target="_blank" rel="nofollow" href="#" class="text-primary text-decoration-none">
-              Esplora la documentazione &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
+    <div class="col-lg-7 p-5 order-1 order-lg-2 text-center">
+      <h3 class="fw-bold text-dark mb-4" style="font-size: 2rem; letter-spacing: -0.5px; line-height: 1.2;">
+        Visualizza eventi
+      </h3>
+      <p class="text-secondary mb-4 mx-auto" style="font-size: 1.1rem; line-height: 1.6;">
+        Esplora gli hackathon in modo semplice e veloce. <br> Da qui puoi monitorare gli eventi attivi,
+        controllare quelli <br> conclusi e visualizzare i team vincitori.
+      </p>
     </div>
   </div>
 </div>
