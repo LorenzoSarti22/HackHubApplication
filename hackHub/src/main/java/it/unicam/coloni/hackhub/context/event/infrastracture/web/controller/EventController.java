@@ -12,6 +12,7 @@ import it.unicam.coloni.hackhub.shared.infrastructure.web.ApiResponseFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/event")
@@ -90,14 +91,14 @@ public class EventController {
     }
 
     @GetMapping("/active")
-    public ApiResponse<java.util.List<EventDto>> getActiveEvents() {
+    public ApiResponse<List<EventDto>> getActiveEvents() {
         return responseFactory.createSuccessResponse("Active events fetched successfully",
                 eventService.getActiveEvents());
     }
 
     @GetMapping("/organizer")
     @PreAuthorize("hasAnyAuthority('ORGANIZER')")
-    public ApiResponse<java.util.List<EventDto>> getOrganizerEvents() {
+    public ApiResponse<List<EventDto>> getOrganizerEvents() {
         return responseFactory.createSuccessResponse("Organizer events fetched successfully",
                 eventService.getOrganizerEvents());
     }

@@ -7,6 +7,7 @@ import it.unicam.coloni.hackhub.context.event.application.mapper.AssignmentMappe
 import it.unicam.coloni.hackhub.context.event.application.mapper.EventMapper;
 import it.unicam.coloni.hackhub.context.event.application.strategies.EventCreationStrategy;
 import it.unicam.coloni.hackhub.context.event.domain.model.Event;
+import it.unicam.coloni.hackhub.context.event.domain.model.EventStatus;
 import it.unicam.coloni.hackhub.context.event.domain.model.StaffMember;
 import it.unicam.coloni.hackhub.context.identity.application.service.AuthService;
 import it.unicam.coloni.hackhub.context.event.domain.repository.EventRepository;
@@ -151,12 +152,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<EventDto> getActiveEvents() {
-        List<it.unicam.coloni.hackhub.context.event.domain.model.EventStatus> activeStatuses = List.of(
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.SUBSCRIPTION,
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.WAITING,
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.RUNNING,
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATING,
-                it.unicam.coloni.hackhub.context.event.domain.model.EventStatus.EVALUATED);
+        List<EventStatus> activeStatuses = List.of(
+                EventStatus.SUBSCRIPTION,
+                EventStatus.WAITING,
+                EventStatus.RUNNING,
+                EventStatus.EVALUATING,
+                EventStatus.EVALUATED);
 
         return eventRepository.findByStatusIn(activeStatuses).stream()
                 .map(eventMapper::toDto)

@@ -27,26 +27,26 @@ Il progetto è modulare e organizzato in **Bounded Contexts** ben definiti (`ide
 
 ```mermaid
 graph TD
-    subgraph Primary Adapters ["Web API (Primary Adapters)"]
+    subgraph PrimaryAdapters ["Web API (Primary Adapters)"]
         direction LR
         UserController[UserController]
         EventController[EventController]
     end
 
-    subgraph Application ["Application Layer (Use Cases)"]
+    subgraph ApplicationLayer ["Application Layer (Use Cases)"]
         direction LR
         EventService[EventService]
         AuthService[AuthService]
     end
 
-    subgraph Domain ["Core Domain (Business Logic)"]
+    subgraph CoreDomain ["Core Domain (Business Logic)"]
         direction LR
         User((User))
         Event((Event))
         Workspace((Workspace))
     end
 
-    subgraph Secondary Adapters ["Infrastructure (Secondary Adapters)"]
+    subgraph SecondaryAdapters ["Infrastructure (Secondary Adapters)"]
         direction LR
         JPA[Spring Data JPA Repositories]
         Security[Spring Security / JWT]
@@ -60,7 +60,13 @@ graph TD
     User ---> JPA
     Event ---> JPA
     JPA ---> DB
-    Security ---> Domain
+    Security ---> CoreDomain
+    
+    classDef default fill:#ffffff,stroke:#0288d1,stroke-width:1.5px,color:#000000;
+    style PrimaryAdapters fill:#5170ff,stroke:#2b3c99,stroke-width:2px,color:#ffffff
+    style ApplicationLayer fill:#5170ff,stroke:#2b3c99,stroke-width:2px,color:#ffffff
+    style CoreDomain fill:#5170ff,stroke:#2b3c99,stroke-width:2px,color:#ffffff
+    style SecondaryAdapters fill:#5170ff,stroke:#2b3c99,stroke-width:2px,color:#ffffff
 ```
 
 ## Stack Tecnologico

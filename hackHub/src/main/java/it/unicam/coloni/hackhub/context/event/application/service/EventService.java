@@ -5,13 +5,10 @@ import it.unicam.coloni.hackhub.context.event.application.dto.requests.EventCrea
 import it.unicam.coloni.hackhub.context.event.application.dto.requests.UpdateEventRequest;
 import it.unicam.coloni.hackhub.context.event.application.dto.EventDetailsDto;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public interface EventService {
-
-    java.util.List<EventDto> getActiveEvents();
-
-    java.util.List<EventDto> getOrganizerEvents();
 
     EventDto createEvent(EventCreationRequest request);
 
@@ -32,5 +29,9 @@ public interface EventService {
     EventDto stopValuating(Long id);
 
     EventDetailsDto getDetails(Long id);
+
+    List<EventDto> getActiveEvents();
+
+    List<EventDto> getOrganizerEvents();
 
 }
