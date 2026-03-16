@@ -15,28 +15,34 @@ class CloudConfigurationTest {
         String content = Files.readString(dockerfile.toPath());
 
         assertTrue(content.contains("AS build"), "Il Dockerfile dovrebbe usare il multi-stage build.");
+
         assertTrue(content.contains("eclipse-temurin:21-jre") || content.contains("openjdk:21"),
                 "L'immagine di runtime deve essere Java 21.");
+
         assertTrue(content.contains("EXPOSE 8080"), "Il Dockerfile deve esporre la porta 8080.");
     }
 
     @Test
-    void verifyDockerComposeDatabaseLink() throws Exception {
+    void verifyDockerComposeInfrastructure() throws Exception {
         File compose = new File("docker-compose-be.yml");
         assertTrue(compose.exists(), "Docker Compose (docker-compose-be.yml) non trovato!");
 
         String content = Files.readString(compose.toPath());
         assertTrue(content.contains("jdbc:postgresql://${DB_HOST}:${DB_PORT}/${POSTGRES_DB}"),
                 "L'URL del database deve essere parametrizzato con variabili d'ambiente!");
+
+        assertTrue(content.contains("JWT_SECRET=${JWT_SECRET}"),
+                "Il segreto JWT deve essere iniettato nel container come variabile d'ambiente!");
     }
 
     @Test
-    void verifyJwtSecurityConsistency() throws Exception {
+    void verifyJwtPropertyDeclaration() throws Exception {
         File properties = new File("src/main/resources/application.properties");
         assertTrue(properties.exists(), "File application.properties non trovato!");
 
         String content = Files.readString(properties.toPath());
-        assertTrue(content.contains("jwt.secret"), "La chiave JWT deve essere definita.");
+        assertTrue(content.contains("jwt.secret"),
+                "La chiave jwt.secret deve essere dichiarata in application.properties.");
     }
 
     @Test
