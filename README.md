@@ -21,7 +21,7 @@ Il progetto è modulare e organizzato in **Bounded Contexts** ben definiti (`ide
 * **Application** --> Business logic applicativa: Servizi, DTO, Mapper e orchestrazione dei casi d'uso.
 * **Domain (Core)** --> Cuore del sistema: Entità, Value Objects e regole di business pure, agnostiche rispetto alla tecnologia.
 * **Infrastructure** --> Implementazione tecnica: Repository (JPA/Hibernate), Security (Spring Security), Adapter esterni.
-* **Test** --> Suite completa di Unit Test (JUnit 5, Mockito) e Integration Test.
+* **Test** --> Cloud Configuration Tests (JUnit 5).
 
 ### Diagramma Hexagonal Architecture
 
@@ -74,7 +74,7 @@ graph TD
 * **Backend:** Java 21 | Spring Boot 3.3.4 | Spring Data JPA | Hibernate 6.5.3
 * **Frontend:** Angular 21.1.3 | Bootstrap 5.3.8
 * **Database:** PostgreSQL 15
-* **Containerization:** Docker | Docker Compose
+* **Containerization:** Docker 
 * **CI/CD:** GitHub Actions
 
 ## Automazione e CI/CD
@@ -120,7 +120,7 @@ Il sistema supporta diversi attori, ognuno con permessi specifici:
 
 ### Workspace di Progetto
 Ogni team dispone di un'area di lavoro dedicata per tracciare il progresso:
-* **Meeting & Report:** Registrazione degli incontri di team e reportistica sulle attività svolte.
+* **Meeting & Report:** Registrazione degli incontri di team e reportistica sulle violazioni del regolamento.
 * **Monitoraggio:** Gli organizzatori possono supervisionare l'attività dei team in tempo reale.
 
 ## Modello Dati
