@@ -1,20 +1,26 @@
 <div id="wrapper" class="d-flex">
 
   <ul *ngIf="isNotLogin()" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"
-    style="min-width: 250px; min-height: 100vh; background: #4e73df;">
+    [ngClass]="{'d-none d-md-flex': !isMobileSidebarOpen, 'd-flex position-absolute top-0 start-0': isMobileSidebarOpen}"
+    style="min-width: 250px; min-height: 100vh; background: #4e73df; z-index: 1040;">
 
-    <a class="sidebar-brand d-flex align-items-center justify-content-center p-3 text-white text-decoration-none"
-      routerLink="/dashboard">
-      <div class="sidebar-brand-icon rotate-n-15">
-        <i class="bi bi-emoji-laughing-fill fs-2"></i>
-      </div>
-      <div class="sidebar-brand-text mx-3 fw-bold">HUCKHUB</div>
-    </a>
+    <div class="d-flex align-items-center justify-content-between w-100 pe-3 position-relative">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center p-3 text-white text-decoration-none w-100"
+        routerLink="/dashboard" (click)="closeMobileSidebar()">
+        <div class="sidebar-brand-icon rotate-n-15">
+          <i class="bi bi-emoji-laughing-fill fs-2"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3 fw-bold">HUCKHUB</div>
+      </a>
+      <button class="btn d-md-none text-white border-0 position-absolute end-0 p-3" (click)="closeMobileSidebar()">
+        <i class="bi bi-x" style="font-size: 2rem;"></i>
+      </button>
+    </div>
 
     <hr class="sidebar-divider my-0 text-white-50">
 
     <li class="nav-item p-2">
-      <a class="nav-link text-white text-decoration-none" routerLink="/dashboard">
+      <a class="nav-link text-white text-decoration-none" routerLink="/dashboard" (click)="closeMobileSidebar()">
         <i class="bi bi-house"></i>
         <span> Home </span>
       </a>
@@ -42,9 +48,9 @@
         <div class="bg-white py-2 rounded shadow-sm" style="margin-top: 5px;">
           <h6 class="px-3 py-1 text-uppercase fw-bold" style="font-size: 0.65rem; color: #b7b9cc;">Stato:</h6>
           <a class="d-block px-3 py-1 text-dark text-decoration-none small hover-item"
-            routerLink="/activeHackathons">Attivi</a>
+            routerLink="/activeHackathons" (click)="closeMobileSidebar()">Attivi</a>
           <a class="d-block px-3 py-1 text-dark text-decoration-none small hover-item"
-            routerLink="/conclusi">Conclusi</a>
+            routerLink="/conclusi" (click)="closeMobileSidebar()">Conclusi</a>
         </div>
       </div>
     </li>
@@ -52,7 +58,7 @@
     <hr class="sidebar-divider mt-3 text-white-50">
 
     <li class="nav-item p-2">
-      <a class="nav-link text-white text-decoration-none" routerLink="/esplora">
+      <a class="nav-link text-white text-decoration-none" routerLink="/esplora" (click)="closeMobileSidebar()">
         <i class="bi bi-airplane-engines"></i>
         <span> Esplora il nostro mondo</span>
       </a>
@@ -67,7 +73,7 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link p-2 align-items-center text-white text-decoration-none" routerLink="/gestioneEventi">
+        <a class="nav-link p-2 align-items-center text-white text-decoration-none" routerLink="/gestioneEventi" (click)="closeMobileSidebar()">
           <i class="bi bi-gear"></i>
           <span> Gestisci Hackaton</span>
         </a>
@@ -80,9 +86,14 @@
 
     <nav *ngIf="isNotLogin()"
       class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow d-flex justify-content-between px-4 py-2">
-      <div class="input-group w-25">
-        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
-        <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
+      <div class="d-flex align-items-center">
+        <button class="btn d-md-none text-dark me-2 border-0" (click)="toggleMobileSidebar()" style="background: transparent;">
+          <i class="bi bi-list fs-2"></i>
+        </button>
+        <div class="input-group d-none d-md-flex" style="max-width: 250px;">
+          <input type="text" class="form-control bg-light border-0 small" placeholder="Search for...">
+          <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
+        </div>
       </div>
 
       <ul class="navbar-nav ml-auto">

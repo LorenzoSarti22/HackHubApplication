@@ -31,45 +31,59 @@
         <button type="button" class="btn-close" (click)="globalSuccessMessage = null" aria-label="Close"></button>
       </div>
 
-      <div class="table-responsive" *ngIf="!loading && !error">
-        <table class="table table-hover border">
-          <thead class="table-light">
-            <tr>
-              <th>Titolo Evento</th>
-              <th>Data Inizio</th>
-              <th>Data Fine</th>
-              <th>Stato</th>
-              <th class="text-center">Azioni</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let event of events">
-              <td class="align-middle fw-bold">{{ event.name }}</td>
-              <td class="align-middle">{{ event.runningPeriod?.startDate | date:'dd/MM/yyyy' }}</td>
-              <td class="align-middle">{{ event.runningPeriod?.endDate | date:'dd/MM/yyyy' }}</td>
-              <td class="align-middle">
-                <span class="badge" [ngClass]="'bg-' + getStatusColor(event.status)">
-                  {{ event.status }}
-                </span>
-              </td>
-              <td class="text-center">
-                <button class="btn btn-sm btn-outline-warning me-2" title="Modifica" data-bs-toggle="modal"
-                  data-bs-target="#editModal" (click)="openEditModal(event)">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger" title="Elimina" data-bs-toggle="modal"
-                  data-bs-target="#deleteModal" (click)="confirmDelete(event)">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </td>
-            </tr>
-            <tr *ngIf="events.length === 0">
-              <td colspan="4" class="text-center py-4 text-muted">
-                Nessun hackathon creato finora. Clicca su "Nuovo Hackathon" per iniziare!
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="list-group" *ngIf="!loading && !error">
+        <!-- Intestazione visibile solo su desktop -->
+        <div class="list-group-item bg-light d-none d-md-flex fw-bold text-muted border-bottom py-2">
+          <div class="col-3 border-end pe-2">Titolo Evento</div>
+          <div class="col-2 ps-2">Data Inizio</div>
+          <div class="col-2">Data Fine</div>
+          <div class="col-2">Stato</div>
+          <div class="col-3 text-center">Azioni</div>
+        </div>
+
+        <!-- Elementi della lista -->
+        <div class="list-group-item d-flex flex-column flex-md-row align-items-md-center py-3 list-group-item-action"
+          *ngFor="let event of events">
+          <div class="col-12 col-md-3 fw-bold mb-2 mb-md-0 text-dark">
+            {{ event.name }}
+          </div>
+
+          <div class="col-12 col-md-4 d-flex flex-column flex-md-row mb-2 mb-md-0 text-muted small p-0">
+            <div class="col-12 col-md-6 mb-1 mb-md-0">
+              <span class="d-md-none fw-bold text-dark me-1">Data Inizio:</span>
+              <i class="bi bi-calendar-event me-1 d-none d-md-inline"></i>{{ event.runningPeriod?.startDate |
+              date:'dd/MM/yyyy' }}
+            </div>
+            <div class="col-12 col-md-6">
+              <span class="d-md-none fw-bold text-dark me-1">Data Fine:</span>
+              <i class="bi bi-calendar-check me-1 d-none d-md-inline"></i>{{ event.runningPeriod?.endDate |
+              date:'dd/MM/yyyy' }}
+            </div>
+          </div>
+
+          <div class="col-12 col-md-2 mb-3 mb-md-0">
+            <span class="d-md-none fw-bold text-dark me-2">Stato:</span>
+            <span class="badge" [ngClass]="'bg-' + getStatusColor(event.status)">
+              {{ event.status }}
+            </span>
+          </div>
+
+          <div
+            class="col-12 col-md-3 text-md-center mt-2 mt-md-0 d-flex justify-content-start justify-content-md-center p-0">
+            <button class="btn btn-sm btn-outline-warning me-2" title="Modifica" data-bs-toggle="modal"
+              data-bs-target="#editModal" (click)="openEditModal(event)">
+              <i class="bi bi-pencil me-1"></i><span class="d-md-none"> Modifica</span>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Elimina" data-bs-toggle="modal"
+              data-bs-target="#deleteModal" (click)="confirmDelete(event)">
+              <i class="bi bi-trash me-1"></i><span class="d-md-none"> Elimina</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="list-group-item text-center py-4 text-muted" *ngIf="events.length === 0">
+          Nessun hackathon creato finora. Clicca su "Nuovo Hackathon" per iniziare!
+        </div>
       </div>
     </div>
   </div>

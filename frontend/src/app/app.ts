@@ -11,8 +11,17 @@ import { CommonModule } from '@angular/common';
 })
 export class App {
   isEventsMenuOpen = false;
+  isMobileSidebarOpen = false;
 
   constructor(public router: Router) { }
+
+  toggleMobileSidebar() {
+    this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  }
+
+  closeMobileSidebar() {
+    this.isMobileSidebarOpen = false;
+  }
 
   toggleEventsMenu() {
     this.isEventsMenuOpen = !this.isEventsMenuOpen;
